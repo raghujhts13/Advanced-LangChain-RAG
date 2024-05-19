@@ -71,9 +71,7 @@ class local_llama3_chatbot:
         self.clients = [i['client'] for i in metadatas]
         correct_client = process.extractOne(client, self.clients)[0]
         print(f'client is {correct_client}')
-        retriever = self.db.as_retriever(search_kwargs={"k":3,"filter":{
-                                                            'client': correct_client
-                                                        }})
+        retriever = self.db.as_retriever(search_kwargs={"k":3})
         # You can simplify the filter dict dynamically instead of these many if statements.
         # I have done this for simplicity
         if searchtype=='solo-document' and isinstance(year, int)==False:
@@ -82,12 +80,12 @@ class local_llama3_chatbot:
                                                         "filter":{
                                                             'client': correct_client
                                                         }})
-        elif searchtype=='cross-document' and isinstance(year,int):
-            print("entered - "+searchtype)
-            retriever = self.db.as_retriever(search_kwargs={"k":3,
-                                                        "filter":{
-                                                            'contract_date': {'$gt': f'01-01-{year}'}
-                                                        }})
+        # elif searchtype=='cross-document' and isinstance(year,int):
+        #     print("entered - "+searchtype)
+        #     retriever = self.db.as_retriever(search_kwargs={"k":3,
+        #                                                 "filter":{
+        #                                                     'contract_date': {'$gt': f'01-01-{year}'}
+        #                                                 }})
         elif searchtype=='solo-document' and isinstance(year,int):
             print("entered - "+searchtype)
             retriever = self.db.as_retriever(search_kwargs={"k":3,
